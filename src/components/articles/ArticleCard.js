@@ -72,7 +72,7 @@ function ArticleCard({ article, handleAddComment }) {
 
         fetchLikeStatus(); // Викликаємо функцію завантаження статусу
         // Залежності ефекту: виконується при зміні користувача, ID статті або кількості лайків статті (для синхронізації)
-    }, [currentUser, article.id, article.likesCount, API_BASE_URL]);
+    }, [currentUser, article.id, article.likesCount]);
     // --------------------------------------------
 
     // --- Обробник кліку на кнопку "Подобається" (лайк / розлайк) ---

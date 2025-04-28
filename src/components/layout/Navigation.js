@@ -78,31 +78,28 @@ function Navigation() {
 
   // Ефект для додавання та видалення слухачів подій
   useEffect(() => {
-    /**
-     * Обробник зміни розміру вікна браузера.
-     * Автоматично закриває мобільне меню при переході до десктопної версії.
-     */
+    // Визначення функції тепер всередині useEffect
+    const handleClickOutside = (event) => {
+        if (navRef.current && !navRef.current.contains(event.target) && isMobileMenuOpen) {
+            setIsMobileMenuOpen(false);
+        }
+    };
+
     const handleResize = () => {
-      // Якщо ширина вікна стала більшою за 768px (умовна межа моб. версії)
       if (window.innerWidth > 768) {
-        setIsMobileMenuOpen(false); // Закриваємо меню
+        setIsMobileMenuOpen(false);
       }
     };
 
-    // Додаємо слухач зміни розміру вікна
     window.addEventListener('resize', handleResize);
-    // Додаємо слухач кліку миші на весь документ для закриття меню при кліку поза ним
     document.addEventListener('mousedown', handleClickOutside);
 
-    // Функція очищення, яка викликається при розмонтуванні компонента
     return () => {
-        // Видаляємо слухачі, щоб уникнути витоків пам'яті
-        window.removeEventListener('resize', handleResize);
-        document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  // Залежність `isMobileMenuOpen` потрібна для `handleClickOutside`,
-  // щоб він коректно працював зі станом меню.
-  }, [isMobileMenuOpen]);
+    // Тепер isMobileMenuOpen є єдиною залежністю, яка потрібна
+  }, [isMobileMenuOpen]); // handleClickOutside більше не потрібна в залежностях
 
   // Рендеринг компонента навігації
   return (

@@ -54,10 +54,10 @@ function SignupForm() {
     * Тимчасова функція-заглушка для обробки реєстрації/входу через Google.
     * На даний момент показує сповіщення про нереалізований функціонал.
     */
-   const handleGoogleSignIn = () => {
+  /*const handleGoogleSignIn = () => {
       alert("Вхід через Google ще не реалізовано.");
       // TODO: Додати реальну логіку Firebase Google Sign-In.
-  };
+  };*/
 
   // Рендеринг форми
   return (
