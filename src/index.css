@@ -1,0 +1,1337 @@
+/* ==========================================================================
+   1. Глобальні налаштування та Змінні CSS
+   ========================================================================== */
+
+/* 1.1 CSS Змінні для легкого налаштування теми */
+:root {
+  /* Шрифти */
+  --font-primary: 'Inter', 'Segoe UI', Arial, sans-serif; /* Основний шрифт */
+  /* --font-primary: 'Lato', 'Segoe UI', Arial, sans-serif; */ /* Альтернативний варіант */
+
+  /* Кольорова палітра */
+  --color-background: #f8f9fa;      /* Дуже світлий фон сторінки */
+  --color-surface: #ffffff;         /* Фон для карток, секцій, навігації */
+  --color-text-primary: #343a40;    /* Основний колір тексту (темно-сірий) */
+  --color-text-secondary: #6c757d;   /* Другорядний колір тексту (сірий) */
+  --color-primary: #5c7aff;         /* Основний акцентний колір (спокійний синій) */
+  --color-primary-dark: #4a63cc;    /* Темніший варіант основного для hover-ефектів */
+  --color-secondary: #c8d4ff;       /* Світлий акцентний колір (доповнює основний) */
+  --color-border: #e9ecef;         /* Колір для меж, роздільників */
+  --color-success: #28a745;        /* Колір для кнопок успіху/редагування */
+  --color-success-dark: #218838;   /* Темніший варіант для hover */
+  --color-like-active: #ff6b6b;    /* Колір для активної кнопки "Подобається" */
+
+  /* Радіуси заокруглення */
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 12px;
+
+  /* Тіні */
+  --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.05);
+  --box-shadow-medium: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12); /* Для ефектів при наведенні */
+}
+
+/* 1.2 Базові стилі для Body */
+body {
+  font-family: var(--font-primary);
+  font-size: 16px; /* Базовий розмір шрифту */
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  line-height: 1.7; /* Міжрядковий інтервал для кращої читабельності */
+  -webkit-font-smoothing: antialiased; /* Покращення рендерингу шрифтів у WebKit */
+  -moz-osx-font-smoothing: grayscale; /* Покращення рендерингу шрифтів у Firefox */
+}
+
+/* 1.3 Глобальний box-sizing */
+/* Застосовує border-box до всіх елементів, щоб padding та border включались у ширину/висоту */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 1.4 Скидання та базові стилі для заголовків і параграфів */
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0; /* Прибираємо стандартний верхній відступ */
+  margin-bottom: 1rem; /* Додаємо стандартний нижній відступ */
+}
+h1, h2, h3 {
+    line-height: 1.3; /* Зменшуємо міжрядковий інтервал для заголовків */
+}
+
+/* ==========================================================================
+   2. Стилі Шапки Сайту (Header)
+   ========================================================================== */
+
+.header {
+  background-color: var(--color-surface); /* Білий фон */
+  color: var(--color-primary);            /* Основний акцентний колір для тексту */
+  text-align: left;                       /* Вирівнювання по лівому краю */
+  padding: 20px 40px;                     /* Внутрішні відступи (верх/низ | боки) */
+  margin-bottom: 0;                       /* Прибираємо відступ знизу */
+  border-bottom: 1px solid var(--color-border); /* Додаємо тонку лінію знизу */
+}
+
+/* Стилізація головного заголовка H1 в шапці */
+.header h1 {
+    font-size: 1.8em;         /* Розмір шрифту */
+    font-weight: 700;         /* Насиченість шрифту */
+    margin-bottom: 0;         /* Прибираємо зайвий відступ знизу */
+    display: inline-block;    /* Дозволяє padding працювати коректно */
+}
+
+/* Стилізація посилання всередині H1 (для логотипу/назви сайту) */
+.header h1 a {
+    color: inherit;           /* Наслідує колір від батьківського H1 */
+    text-decoration: none;    /* Прибираємо стандартне підкреслення посилань */
+}
+
+/* ==========================================================================
+   3. Стилі Підвалу Сайту (Footer)
+   ========================================================================== */
+
+.footer {
+  background-color: var(--color-background); /* Світлий фон, як у body */
+  color: var(--color-text-secondary);        /* Сірий колір тексту */
+  text-align: center;                        /* Центрування тексту */
+  padding: 25px 0;                           /* Внутрішні відступи (верх/низ | боки) */
+  margin-top: 50px;                          /* Відступ зверху від основного контенту */
+  font-size: 0.9em;                          /* Трохи менший розмір шрифту */
+  border-top: 1px solid var(--color-border); /* Додаємо тонку лінію зверху */
+  /* Прибираємо зайві стилі, якщо вони були успадковані */
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   4. Стилі Навігаційного Меню (Navigation)
+   ========================================================================== */
+
+/* 4.1 Загальні стилі для контейнера навігації */
+.navigation {
+  background-color: var(--color-surface); /* Фон навігації */
+  padding: 15px 40px;                     /* Внутрішні відступи */
+  margin-bottom: 40px;                    /* Відступ знизу від навігації */
+  position: sticky;                       /* Прикріплюємо меню до верху екрану при прокрутці */
+  top: 0;                                 /* Позиція прикріплення */
+  z-index: 10;                            /* Визначає порядок накладання (вище за більшість елементів) */
+  display: flex;                          /* Використовуємо Flexbox для розташування елементів */
+  justify-content: space-between;         /* Розподіляє простір між кнопкою-гамбургером (на моб.) та списком */
+  align-items: center;                    /* Вирівнює елементи по вертикалі */
+  border-bottom: none;                    /* Прибираємо можливу нижню межу */
+}
+
+/* 4.2 Стилі для списку посилань (<ul>) - Десктопна версія */
+.navigation ul {
+  list-style: none;               /* Прибираємо стандартні маркери списку */
+  padding: 0;                     /* Прибираємо внутрішні відступи */
+  margin: 0;                      /* Прибираємо зовнішні відступи */
+  display: flex;                  /* Горизонтальне розташування пунктів меню */
+  align-items: center;            /* Вирівнювання пунктів по вертикалі */
+  gap: 20px;                      /* Відступ між групами посилань */
+  flex-grow: 1;                   /* Дозволяє списку зайняти доступний простір */
+}
+
+/* 4.3 Групування посилань (Основні та Авторизація) */
+.navigation .nav-group-main,
+.navigation .nav-group-auth {
+  display: flex;
+  align-items: center; /* Вирівнюємо елементи всередині групи по вертикалі */
+  gap: 15px; /* Відступ МІЖ пунктами всередині групи (зменшений) */
+}
+
+/* Група основних посилань (Головна, Публікації, Статті) */
+.navigation .nav-group-main {
+  flex-grow: 1;                 /* Дозволяє цій групі розширюватися */
+  max-width: 60%;               /* Обмежує максимальну ширину */
+  justify-content: space-around;/* Рівномірно розподіляє посилання всередині групи */
+}
+
+/* Група посилань авторизації (Вхід, Реєстрація / Привітання, Вихід) */
+.navigation .nav-group-auth {
+  margin-left: auto;  /* Притискає цю групу до правого краю */
+  flex-shrink: 0;     /* Забороняє групі стискатися, якщо мало місця */
+}
+
+/* 4.4 Стилі для посилань (<a>) в навігації */
+.navigation a {
+  text-decoration: none;                 /* Прибираємо підкреслення */
+  color: var(--color-text-secondary);    /* Сірий колір для неактивних посилань */
+  font-weight: 600;                      /* Напівжирний шрифт */
+  font-size: 1.1em;                      /* Розмір шрифту */
+  padding: 8px 12px;                     /* Внутрішні відступи для збільшення області кліку */
+  border-radius: var(--border-radius-medium); /* Заокруглення кутів */
+  transition: color 0.2s ease, background-color 0.2s ease; /* Плавні переходи для hover */
+}
+
+/* Ефект при наведенні на посилання */
+.navigation a:hover {
+  color: var(--color-primary);           /* Зміна кольору тексту на основний акцентний */
+  background-color: var(--color-secondary);/* Додавання світлого фону */
+}
+
+/* Стиль для активного посилання (використовується NavLink з react-router-dom) */
+.navigation a.active {
+  color: var(--color-primary);           /* Основний акцентний колір */
+  font-weight: 700;                      /* Більш жирний шрифт для активного пункту */
+}
+
+/* 4.5 Стилі для привітання користувача */
+.navigation .user-greeting {
+  color: var(--color-text-secondary); /* Сірий колір тексту */
+  margin-right: 15px;                /* Відступ справа */
+  white-space: nowrap;               /* Заборона переносу тексту на новий рядок */
+  font-size: 1em;                    /* Розмір шрифту */
+}
+
+/* 4.6 Стилі для кнопки "Вийти" */
+.navigation .nav-button.logout-button {
+  background: none;               /* Без фону */
+  border: none;                   /* Без рамки */
+  padding: 8px 12px;              /* Такі ж відступи, як у посилань */
+  margin: 0;                      /* Без зовнішніх відступів */
+  color: var(--color-text-secondary); /* Колір, як у неактивних посилань */
+  font-weight: 600;               /* Шрифт, як у посилань */
+  font-size: 1.1em;               /* Розмір, як у посилань */
+  font-family: inherit;           /* Наслідує шрифт */
+  cursor: pointer;                /* Курсор-рука */
+  border-radius: var(--border-radius-medium); /* Заокруглення, як у посилань */
+  transition: color 0.2s ease, background-color 0.2s ease; /* Плавні переходи */
+}
+
+/* Ефект при наведенні на кнопку "Вийти" */
+.navigation .nav-button.logout-button:hover {
+  color: var(--color-primary);           /* Зміна кольору, як у посилань */
+  background-color: var(--color-secondary);/* Зміна фону, як у посилань */
+}
+
+
+/* ==========================================================================
+   5. Стилі Навігаційного Меню - Мобільна версія та Гамбургер
+   ========================================================================== */
+
+/* 5.1 Стилі для кнопки-гамбургера */
+.hamburger-button {
+  display: none; /* За замовчуванням прихована на десктопі */
+  flex-direction: column;       /* Вертикальне розташування ліній */
+  justify-content: space-around;/* Рівномірний розподіл простору між лініями */
+  width: 30px;                  /* Ширина кнопки */
+  height: 25px;                 /* Висота кнопки */
+  background: transparent;      /* Прозорий фон */
+  border: none;                 /* Без рамки */
+  cursor: pointer;              /* Курсор-рука */
+  padding: 0;                   /* Без внутрішніх відступів */
+  z-index: 11;                  /* Вище за список меню, щоб завжди була клікабельна */
+  transition: all 0.3s ease-in-out; /* Плавна анімація для всіх змін */
+}
+
+/* Стилі для ліній всередині гамбургера (<span>) */
+.hamburger-button span {
+  display: block;                 /* Робить span блочним елементом */
+  width: 100%;                    /* Ширина лінії = ширина кнопки */
+  height: 3px;                    /* Товщина лінії */
+  background-color: var(--color-text-primary); /* Колір лінії */
+  border-radius: 2px;             /* Заокруглення кінців лінії */
+  transition: all 0.3s ease-in-out; /* Анімація для трансформацій */
+  position: relative;             /* Необхідно для transform-origin */
+  transform-origin: center;       /* Точка обертання для анімації в хрестик */
+}
+
+/* 5.2 Анімація гамбургера в хрестик (коли меню відкрите) */
+/* Застосовується, коли кнопка має клас 'open' */
+.hamburger-button.open span:nth-child(1) {
+  /* Перша лінія: піднімається і обертається на 45 градусів */
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger-button.open span:nth-child(2) {
+  /* Друга (середня) лінія: стає прозорою */
+  opacity: 0;
+}
+.hamburger-button.open span:nth-child(3) {
+  /* Третя лінія: опускається і обертається на -45 градусів */
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* 5.3 Медіа-запит для мобільних пристроїв (екрани <= 768px) */
+@media (max-width: 768px) {
+
+  /* Змінюємо відступи навігації на мобільних */
+  .navigation {
+    padding: 15px 20px;
+  }
+
+  /* Показуємо кнопку-гамбургер */
+  .hamburger-button {
+    display: flex;
+  }
+
+  /* Стилі для СКРИТОГО стану списку меню */
+  /* Забезпечує гарантоване приховування, коли немає класу 'open' */
+  .navigation ul:not(.open) {
+    display: none;
+  }
+
+  /* Базові стилі для списку меню на мобільних (коли прихований і коли видимий) */
+  .navigation ul {
+    display: none; /* За замовчуванням приховано */
+    flex-direction: column;   /* Елементи вертикально */
+    position: absolute;       /* Вириваємо з потоку */
+    top: 100%;                /* Позиціонуємо одразу під шапкою */
+    left: 0;
+    right: 0;
+    background-color: var(--color-surface); /* Фон випадаючого меню */
+    padding: 20px;            /* Внутрішні відступи */
+    box-shadow: var(--box-shadow-light); /* Легка тінь */
+    border-top: 1px solid var(--color-border); /* Верхня межа */
+    align-items: center;      /* Центрування пунктів по горизонталі */
+    gap: 0;                   /* Прибираємо горизонтальний відступ між групами */
+    width: auto;              /* Автоматична ширина */
+    z-index: 9;               /* Нижче за кнопку-гамбургер */
+  }
+
+  /* Стилі для ВІДКРИТОГО стану списку меню */
+  .navigation ul.open {
+    display: flex; /* Робимо видимим */
+    /* Повторюємо/додаємо стилі, щоб забезпечити правильне відображення */
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-surface);
+    padding: 20px;
+    box-shadow: var(--box-shadow-light);
+    border-top: 1px solid var(--color-border);
+    align-items: center;
+    gap: 0;
+    width: auto;
+    z-index: 9;
+    /* Анімація появи */
+    animation: slideDown 0.3s ease-out forwards;
+  }
+
+  /* Анімація випадання зверху */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px); /* Починаємо трохи вище */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* Кінцева позиція */
+    }
+  }
+
+  /* Стилі для пунктів списку (<li>) в мобільному меню */
+  .navigation ul li {
+      width: 100%;          /* Займає всю ширину контейнера */
+      text-align: center;   /* Центрування тексту */
+      margin-bottom: 10px;  /* Відступ між пунктами */
+  }
+  .navigation ul li:last-child {
+      margin-bottom: 0; /* Прибираємо відступ у останнього елемента */
+   }
+
+  /* Стилі для посилань (<a>) всередині мобільного меню */
+  /* Перевизначаємо деякі стилі для кращого вигляду/зручності */
+  .navigation ul a {
+    display: block;     /* Робимо посилання блочним для заповнення <li> */
+    padding: 12px;      /* Збільшуємо внутрішні відступи */
+    font-size: 1.2em;   /* Збільшуємо розмір шрифту */
+  }
+
+  /* Скидаємо/адаптуємо стилі для груп посилань всередині мобільного меню */
+  .navigation ul .nav-group-main,
+  .navigation ul .nav-group-auth {
+    flex-direction: column;   /* Вертикальне розташування */
+    align-items: center;      /* Центрування елементів групи */
+    width: 100%;              /* Група займає всю ширину */
+    gap: 10px;                /* Відступ між елементами групи */
+    margin-bottom: 15px;      /* Відступ під групою */
+    margin-left: 0;           /* Скидаємо бічні відступи */
+    margin-right: 0;
+    /* Скидаємо властивості, що були потрібні для десктопу */
+    justify-content: initial;
+    flex-shrink: initial;
+    flex-grow: initial; /* Важливо скинути */
+    max-width: initial; /* Важливо скинути */
+  }
+  /* Прибираємо нижній відступ у останньої групи */
+  .navigation ul .nav-group-auth {
+       margin-bottom: 0;
+   }
+
+  /* Стилі для кнопки "Вийти" в мобільному меню */
+  .navigation .nav-button.logout-button {
+    width: 100%;        /* Кнопка на всю ширину */
+    padding: 12px;      /* Збільшені відступи */
+    font-size: 1.2em;   /* Збільшений шрифт */
+    margin-top: 5px;    /* Невеликий відступ зверху */
+  }
+
+  /* Стилі для привітання користувача в мобільному меню */
+  /* Стиль для .user-greeting всередині відкритого ul */
+  .navigation ul .user-greeting {
+    text-align: center; /* Центруємо текст */
+    margin-right: 0;    /* Прибираємо правий відступ */
+    margin-bottom: 10px;/* Додаємо нижній відступ */
+    padding: 5px 0;     /* Невеликі вертикальні відступи */
+    width: 100%;        /* На всю ширину */
+    order: -1;          /* Ставимо привітання першим в групі авторизації */
+    /* Додатково можна перевизначити колір/розмір, якщо потрібно */
+    color: var(--color-text-secondary);
+    font-size: 1.1em;
+  }
+  /* Скидання стилю для десктопного .user-greeting, якщо він впливає */
+  .navigation .user-greeting {
+     margin-right: 0; /* Щоб не конфліктувало з мобільним */
+     /* Інші десктопні стилі тут не потрібні, оскільки вони перекриються в ul.open */
+  }
+
+} /* Кінець медіа-запиту @media (max-width: 768px) */
+
+/* ==========================================================================
+   6. Стилі Основного Контенту та Секцій
+   ========================================================================== */
+
+/* 6.1 Стилі для обгортки основного контенту (<main class="content">) */
+.content {
+  max-width: 1200px; /* Максимальна ширина контенту на великих екранах */
+  margin: 40px auto; /* Відступи зверху/знизу та автоматичні бічні (центрування) */
+  padding: 0 20px;   /* Внутрішні бічні відступи для безпеки на вузьких екранах */
+  /* Прибираємо стилі, що могли бути у попередніх версіях */
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* 6.2 Загальні стилі для секцій всередині .content */
+/* Застосовується до .blogger-info-section, .future-travels-section, .publications-section, .articles-section */
+.blogger-info-section,
+.future-travels-section,
+.publications-section,
+.articles-section {
+  padding: 40px;                     /* Великі внутрішні відступи */
+  margin-bottom: 40px;               /* Відступ між секціями */
+  background-color: var(--color-surface); /* Фон секції (зазвичай білий) */
+  border-radius: var(--border-radius-large); /* Заокруглені кути */
+  box-shadow: var(--box-shadow-medium); /* Стандартна тінь */
+  position: relative;                /* Необхідно для позиціонування псевдоелементів */
+  overflow: hidden;                  /* Обрізає псевдоелементи, що виходять за межі */
+}
+
+/* 6.3 Контейнери контенту всередині секцій */
+/* Дозволяє контенту бути поверх декоративних псевдоелементів */
+.blogger-info-content,
+.future-travels-list,
+.publication-list, /* Додано */
+.articles-list {   /* Додано */
+  position: relative; /* Встановлює контекст позиціонування */
+  z-index: 1;         /* Гарантує, що контент вище за елементи з z-index: 0 (псевдоелементи) */
+}
+
+/* 6.4 Заголовки секцій (H2) */
+.blogger-info-section h2,
+.future-travels-section h2,
+.articles-section h2,
+.publications-section h2,
+.publication-section h2 { /* Можливо, застарілий клас, але залишаємо про всяк випадок */
+  text-align: center;                /* Центрування заголовка */
+  margin-bottom: 30px;               /* Відступ під заголовком */
+  color: var(--color-text-primary);  /* Основний колір тексту */
+  font-size: 1.8em;                  /* Розмір шрифту */
+  font-weight: 600;                  /* Напівжирний шрифт */
+  border-bottom: none;               /* Прибираємо можливе підкреслення */
+  padding-bottom: 0;                 /* Прибираємо можливий відступ */
+}
+
+/* 6.5 Декоративні псевдоелементи (блоби) для деяких секцій */
+/* Перший блоб (верхній лівий) */
+.blogger-info-section::before,
+.publications-section::before, /* Застосовується також до секції публікацій */
+.articles-section::before {   /* Застосовується також до секції статей */
+  content: '';                     /* Обов'язково для псевдоелементів */
+  position: absolute;              /* Абсолютне позиціонування відносно батьківської секції */
+  top: -50px;                      /* Зміщення вгору */
+  left: -80px;                     /* Зміщення вліво */
+  width: 200px;                    /* Ширина */
+  height: 200px;                   /* Висота */
+  background-color: #a8b8ff;       /* Світло-синій колір */
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Створює неправильну форму */
+  opacity: 0.3;                    /* Напівпрозорість */
+  z-index: 0;                      /* Розміщує позаду контенту (який має z-index: 1) */
+}
+
+/* Другий блоб (нижній правий) */
+.blogger-info-section::after,
+.publications-section::after, /* Застосовується також до секції публікацій */
+.articles-section::after {   /* Застосовується також до секції статей */
+  content: '';
+  position: absolute;
+  bottom: -60px;                   /* Зміщення вниз */
+  right: -70px;                    /* Зміщення вправо */
+  width: 250px;                    /* Ширина */
+  height: 150px;                   /* Висота */
+  background-color: #c8d4ff;       /* Ще світліший синій колір */
+  border-radius: 60% 40% 30% 70% / 60% 70% 30% 40%; /* Інша неправильна форма */
+  opacity: 0.4;                    /* Напівпрозорість */
+  z-index: 0;                      /* Розміщує позаду контенту */
+}
+
+/* ==========================================================================
+   7. Стилі Секції "Про мене" (Blogger Info Section)
+   ========================================================================== */
+
+/* 7.1 Контейнер для контенту всередині секції "Про мене" */
+.blogger-info-content {
+  display: flex;              /* Використовуємо Flexbox */
+  flex-direction: column;     /* За замовчуванням: фото під текстом (мобільна версія) */
+  align-items: center;        /* Центруємо елементи по горизонталі (в column-режимі) */
+  gap: 30px;                  /* Відступ між текстом та фото */
+  position: relative;         /* Потрібно для z-index */
+  z-index: 1;                 /* Щоб контент був поверх блобів */
+}
+
+/* 7.2 Блок з текстом про блогера */
+.blogger-text {
+  width: 100%;                /* Займає всю доступну ширину */
+  padding-right: 0;           /* Скидання відступу */
+  margin-bottom: 20px;        /* Відступ знизу на мобільних */
+}
+
+/* Стилізація параграфів всередині .blogger-text */
+.blogger-text p {
+    color: var(--color-text-secondary); /* М'якший, сірий колір тексту */
+    font-size: 1.05em;                /* Трохи більший шрифт */
+}
+
+/* Стилізація жирного тексту (<strong>) */
+.blogger-text strong {
+    color: var(--color-text-primary); /* Основний колір тексту */
+}
+
+/* Стилізація курсиву (<em>) */
+.blogger-text em {
+    color: var(--color-text-primary); /* Основний колір тексту */
+    font-style: italic;               /* Стандартний курсив */
+}
+
+/* Стилізація посилань (<a>) всередині тексту */
+.blogger-text a {
+    color: var(--color-primary);        /* Основний акцентний колір */
+    text-decoration: none;            /* Без підкреслення */
+    font-weight: 500;                 /* Звичайна насиченість */
+    border-bottom: 1px solid transparent; /* Прозоре нижнє підкреслення для анімації */
+    transition: border-color 0.2s ease; /* Плавна зміна кольору підкреслення */
+}
+
+/* Ефект при наведенні на посилання в тексті */
+.blogger-text a:hover {
+    border-bottom-color: var(--color-primary); /* Показуємо підкреслення */
+}
+
+/* 7.3 Контейнер для фотографії блогера */
+.blogger-photo-container {
+  width: 100%; /* На мобільних займає всю ширину */
+  max-width: 250px; /* Максимальна ширина фото на десктопі */
+  margin: 0 auto; /* Центрування на мобільних */
+}
+
+/* 7.4 Стилі для самої фотографії */
+.blogger-photo {
+  width: 100%;                    /* Фото заповнює контейнер */
+  height: auto;                   /* Висота автоматична */
+  border-radius: 50%;             /* Робимо фото круглим */
+  display: block;                 /* Забирає зайві відступи під зображенням */
+  aspect-ratio: 1 / 1;            /* Співвідношення сторін 1:1 (квадрат) */
+  object-fit: cover;              /* Масштабує зображення, зберігаючи пропорції та обрізаючи зайве */
+  box-shadow: var(--box-shadow-light); /* Легка тінь */
+  border: 5px solid var(--color-surface); /* Біла рамка навколо фото */
+}
+
+/* 7.5 Адаптація секції "Про мене" для Планшетів/Десктопів */
+@media (min-width: 768px) {
+  /* Розташовуємо текст і фото в рядок */
+  .blogger-info-content {
+      flex-direction: row;    /* Горизонтальний напрямок */
+      align-items: center;    /* Вирівнювання по вертикалі */
+  }
+
+  /* Стилі для тексту на великих екранах */
+  .blogger-text {
+      padding-left: 0;        /* Скидання відступу */
+      margin-bottom: 0;       /* Прибираємо нижній відступ */
+      flex: 1;                /* Дозволяє текстовому блоку зайняти вільний простір */
+  }
+
+  /* Стилі для контейнера фото на великих екранах */
+  .blogger-photo-container {
+      max-width: 250px;       /* Залишаємо обмеження ширини */
+      margin-right: 30px;     /* Відступ справа від фото (між фото і текстом) */
+      margin-left: 0;         /* Скидаємо лівий відступ */
+      flex-shrink: 0;         /* Забороняємо контейнеру з фото стискатися */
+  }
+}
+
+/* ==========================================================================
+   8. Стилі Секції "Куди я планую поїхати" (Future Travels Section)
+   ========================================================================== */
+
+/* 8.1 Загальні стилі секції (деякі успадковуються з 6.2) */
+.future-travels-section {
+  background-color: var(--color-background); /* Відмінний фон від інших секцій (світлий) */
+  position: relative;                        /* Для можливих майбутніх псевдоелементів */
+  overflow: hidden;                          /* Для можливих майбутніх псевдоелементів */
+  /* Успадковує padding, margin-bottom, border-radius, box-shadow від загальних стилів секцій */
+}
+
+/* 8.2 Стилі для списку/сітки карток подорожей */
+.future-travels-list {
+  display: grid;                             /* Використовуємо CSS Grid */
+  grid-template-columns: repeat(1, 1fr);     /* За замовчуванням: 1 колонка (мобільні) */
+  gap: 30px;                                 /* Відступ між картками */
+  position: relative;                        /* Для z-index */
+  z-index: 1;                                /* Щоб картки були вище фону секції */
+}
+
+/* 8.3 Стилі для окремої картки подорожі */
+.travel-item {
+  position: relative; /* Для абсолютного позиціонування тексту */
+  border-radius: var(--border-radius-large); /* Заокруглені кути */
+  overflow: hidden; /* Обрізає зображення та текст, що виходять за межі */
+  box-shadow: var(--box-shadow-light); /* Легка тінь */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавні ефекти при наведенні */
+  aspect-ratio: 3 / 4; /* Співвідношення сторін картки (більш вертикальна) */
+  background-color: transparent; /* Фон самої картки прозорий */
+}
+
+/* Ефект при наведенні на картку */
+.travel-item:hover {
+  transform: translateY(-5px); /* Легкий підйом картки */
+  box-shadow: var(--box-shadow-hover); /* Більш виражена тінь */
+}
+
+/* 8.4 Стилі для зображення всередині картки */
+.travel-item img {
+  width: 100%;           /* Займає всю ширину картки */
+  height: 100%;          /* Займає всю висоту картки */
+  object-fit: cover;     /* Масштабує зображення, зберігаючи пропорції та обрізаючи */
+  display: block;        /* Прибирає зайві відступи під зображенням */
+  transition: transform 0.3s ease; /* Плавний ефект масштабування при наведенні */
+}
+
+/* Ефект масштабування зображення при наведенні на картку */
+.travel-item:hover img {
+  transform: scale(1.05); /* Трохи збільшуємо зображення */
+}
+
+/* 8.5 Стилі для підпису (назви місця) під зображенням */
+.travel-item p {
+  position: absolute;              /* Абсолютне позиціонування відносно картки */
+  bottom: 0;                       /* Притискаємо до нижнього краю */
+  left: 0;                         /* Розтягуємо на всю ширину */
+  right: 0;
+  padding: 15px 20px;              /* Внутрішні відступи */
+  margin: 0;                       /* Прибираємо стандартні відступи параграфа */
+  font-weight: 600;                /* Напівжирний шрифт */
+  color: white;                    /* Білий колір тексту */
+  background-color: rgba(0, 0, 0, 0.5); /* Напівпрозорий темний фон */
+  text-align: center;              /* Центрування тексту */
+  transition: background-color 0.3s ease; /* Плавна зміна фону при наведенні */
+}
+
+/* Ефект затемнення фону підпису при наведенні на картку */
+.travel-item:hover p {
+  background-color: rgba(0, 0, 0, 0.7); /* Робимо фон темнішим */
+}
+
+/* 8.6 Адаптація сітки карток для різних розмірів екрану */
+/* Планшетна версія (екрани >= 768px) */
+@media (min-width: 768px) {
+  .future-travels-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+  }
+}
+
+/* Десктопна версія (екрани >= 1200px) */
+@media (min-width: 1200px) {
+  .future-travels-list {
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+  }
+}
+
+/* ==========================================================================
+   9. Стилі Секції "Публікації" (Publications Section)
+   ========================================================================== */
+
+/* 9.1 Загальні стилі секції (успадковуються з 6.2) */
+/* .publications-section використовує загальні стилі секцій: padding, margin, background, border-radius, box-shadow, псевдоелементи */
+
+/* 9.2 Стилі для списку/сітки публікацій */
+.publications-section .publication-list {
+  display: grid;                      /* Використовуємо CSS Grid */
+  /* Автоматично підбирає кількість колонок:
+     - Кожна колонка має мінімальну ширину 300px.
+     - Колонки рівномірно займають доступний простір (1fr). */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;                          /* Відступ між публікаціями */
+  justify-content: center;            /* Центрує елементи по горизонталі, якщо є вільне місце */
+  margin: 0 auto;                     /* Додатково центрує сам grid-контейнер */
+  position: relative;                 /* Для z-index */
+  z-index: 1;                         /* Контент вище псевдоелементів */
+  /* padding-left: 15px; */           /* Закоментовані бічні відступи (не завжди потрібні з auto-fit) */
+  /* padding-right: 15px; */
+}
+
+/* 9.3 Стилі для окремої картки публікації */
+.publications-section .publication-item {
+  border: none;                       /* Без рамки */
+  border-radius: var(--border-radius-large); /* Заокруглені кути */
+  overflow: hidden;                   /* Обрізає вміст, що виходить за межі */
+  background-color: var(--color-surface); /* Фон картки */
+  margin: 0 auto;                     /* Центрує картку по горизонталі в межах її grid-комірки */
+  box-shadow: var(--box-shadow-light); /* Легка тінь */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавні ефекти при наведенні */
+  width: 100%;                        /* Займає доступну ширину grid-комірки */
+  max-width: 380px;                   /* Обмежує максимальну ширину картки (корисно для однієї колонки) */
+}
+
+/* Ефект при наведенні на картку публікації */
+.publications-section .publication-item:hover {
+  background-color: var(--color-surface); /* Фон не змінюється */
+  box-shadow: var(--box-shadow-hover); /* Більш виражена тінь */
+  transform: translateY(-5px);        /* Легкий підйом */
+}
+
+/* 9.4 Стилі для зображення в картці публікації */
+.publications-section .publication-item img {
+  display: block;         /* Прибирає зайві відступи */
+  width: 100%;            /* Ширина на 100% картки */
+  height: 220px;          /* Фіксована висота зображення */
+  object-fit: cover;      /* Масштабує, зберігаючи пропорції та обрізаючи */
+  aspect-ratio: unset;    /* Скасовуємо можливе успадкування aspect-ratio */
+}
+
+/* 9.5 Контейнер для текстових деталей публікації */
+.publications-section .publication-details {
+  padding: 20px; /* Внутрішні відступи */
+}
+
+/* 9.6 Заголовок публікації (H3) */
+.publications-section .publication-details h3 {
+  margin-top: 0;                     /* Без верхнього відступу */
+  margin-bottom: 10px;               /* Відступ знизу */
+  color: var(--color-text-primary);  /* Основний колір тексту */
+  font-size: 1.3em;                  /* Розмір шрифту */
+  font-weight: 600;                  /* Напівжирний */
+}
+
+/* 9.7 Опис публікації (P) */
+.publications-section .publication-details p {
+  margin-bottom: 15px;               /* Відступ знизу */
+  line-height: 1.6;                  /* Міжрядковий інтервал */
+  color: var(--color-text-secondary);/* Другорядний (сірий) колір тексту */
+}
+
+/* 9.8 Дата публікації */
+.publications-section .publication-date {
+    font-size: 0.9em;                 /* Менший розмір шрифту */
+    color: #aaa;                      /* Дуже світло-сірий колір */
+    /* Успадковує margin-bottom від стилів для <p> */
+}
+
+/* 9.9 Стилі для мета-інформації (якщо використовується) - Закоментовано, оскільки .publication-date використовується окремо */
+/*
+.publications-section .publication-meta {
+  font-size: 0.9em;
+  color: #aaa;
+}
+*/
+
+/* 9.10 Стилі для кнопки/посилання "Читати далі" (якщо буде) */
+.publications-section .read-more-link {
+  background-color: var(--color-primary); /* Основний акцентний фон */
+  color: white;                           /* Білий текст */
+  padding: 8px 18px;                      /* Внутрішні відступи */
+  border-radius: var(--border-radius-medium); /* Заокруглення кутів */
+  text-decoration: none;                  /* Без підкреслення */
+  display: inline-block;                  /* Дозволяє встановити відступи та ширину/висоту */
+  transition: background-color 0.2s ease; /* Плавна зміна фону */
+  font-weight: 500;                       /* Звичайна насиченість */
+}
+.publications-section .read-more-link:hover {
+  background-color: var(--color-primary-dark); /* Темніший фон при наведенні */
+}
+
+/* 9.11 Адаптація сітки публікацій для мобільних пристроїв */
+@media (max-width: 767px) {
+  .publications-section .publication-list {
+    justify-items: center; /* Центрує кожну картку в межах її grid-доріжки */
+    grid-template-columns: 1fr; /* Завжди одна колонка */
+  }
+
+  .publications-section .publication-item {
+    /* Додаткове центрування, якщо justify-items недостатньо */
+    justify-self: center;
+    /* Дозволяємо картці займати всю ширину на мобільних */
+    max-width: 100%; /* Перевизначаємо max-width для мобільних */
+  }
+}
+
+/* ==========================================================================
+   10. Стилі Секції "Статті" (Articles Section)
+   ========================================================================== */
+
+/* 10.1 Загальні стилі секції (успадковуються з 6.2) */
+/* .articles-section використовує загальні стилі секцій: padding, margin, background, border-radius, box-shadow, псевдоелементи */
+
+/* 10.2 Стилі для списку статей */
+.articles-section .articles-list {
+  display: flex;              /* Використовуємо Flexbox для розташування статей */
+  flex-direction: column;     /* Статті розташовуються вертикально, одна під одною */
+  gap: 30px;                  /* Відступ між окремими статтями */
+  position: relative;         /* Для z-index */
+  z-index: 1;                 /* Контент вище псевдоелементів */
+}
+
+/* 10.3 Стилі для контейнера окремої статті */
+.articles-section .article-item {
+border: none;                     /* Без зовнішньої рамки */
+padding: 0;                       /* Внутрішні відступи будуть у дочірніх елементах */
+margin-bottom: 0;                 /* Відступи регулюються gap у .articles-list */
+background-color: var(--color-surface); /* Фон статті */
+border-radius: var(--border-radius-large); /* Заокруглені кути */
+box-shadow: var(--box-shadow-medium); /* Стандартна тінь */
+transition: box-shadow 0.2s ease; /* Плавна зміна тіні при наведенні */
+overflow: hidden;                 /* Важливо для заокруглення кутів дочірніх елементів (header, comment-section) */
+}
+
+/* Ефект при наведенні на всю картку статті */
+.articles-section .article-item:hover {
+box-shadow: var(--box-shadow-hover); /* Посилена тінь */
+transform: none; /* Не піднімаємо всю картку при наведенні */
+}
+
+/* 10.4 Шапка статті (заголовок, дата, кнопки) */
+.article-item .publication-header {
+  display: flex;               /* Використовуємо Flexbox */
+  flex-wrap: wrap;             /* Дозволяє елементам переноситись на новий рядок на вузьких екранах */
+  align-items: center;         /* Вирівнювання елементів по вертикалі */
+  justify-content: space-between; /* Розподіляє простір між елементами */
+  padding: 20px 30px;          /* Внутрішні відступи */
+  border-bottom: 1px solid var(--color-border); /* Лінія під шапкою */
+  cursor: pointer;             /* Вказує, що на шапку можна клікнути (для розгортання) */
+}
+
+/* 10.5 Заголовок статті в шапці */
+.article-item .publication-title {
+  flex-grow: 1;           /* Дозволяє заголовку зайняти максимум вільного місця */
+  margin-right: 15px;     /* Відступ справа (від дати/кнопок) */
+  margin-bottom: 5px;     /* Відступ знизу для випадку переносу */
+}
+.article-item .publication-title a {
+font-size: 1.5em;         /* Розмір шрифту заголовка */
+color: var(--color-text-primary); /* Основний колір тексту */
+font-weight: 600;         /* Напівжирний */
+text-decoration: none;    /* Без підкреслення */
+transition: color 0.2s ease; /* Плавна зміна кольору */
+}
+.article-item .publication-title a:hover {
+color: var(--color-primary); /* Зміна кольору при наведенні */
+}
+
+/* 10.6 Дата публікації в шапці */
+.article-item .publication-date {
+font-size: 0.9em;                 /* Менший шрифт */
+color: var(--color-text-secondary); /* Сірий колір */
+margin-right: 15px;               /* Відступ справа (від кнопок) */
+white-space: nowrap;              /* Заборона переносу дати */
+margin-bottom: 5px;               /* Відступ знизу для випадку переносу */
+}
+
+/* 10.7 Контейнер для кнопок дій в шапці (лайк, редагувати) */
+.article-item .publication-actions {
+ margin-bottom: 5px; /* Відступ знизу для випадку переносу */
+ /* Додаткові стилі, якщо кнопки розташовуються в рядок: */
+ /* display: flex; */
+ /* gap: 10px; */
+}
+
+/* ==========================================================================
+ 11. Загальні Стилі для Кнопок в Статтях та Коментарях
+ ========================================================================== */
+
+/* Застосовується до .like-btn, .edit-btn, .collapse-btn, .submit-comment-btn */
+.like-btn, .edit-btn, .collapse-btn, .submit-comment-btn {
+  padding: 8px 16px;                  /* Внутрішні відступи */
+  border: none;                       /* Без рамки */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  font-size: 0.95em;                  /* Розмір шрифту */
+  font-weight: 500;                   /* Насиченість шрифту */
+  cursor: pointer;                    /* Курсор-рука */
+  transition: background-color 0.2s ease, transform 0.1s ease; /* Плавні переходи */
+  text-decoration: none;              /* На випадок використання як посилання */
+  display: inline-block;              /* Дозволяє встановлювати відступи */
+  text-align: center;                 /* Центрування тексту (для іконок + тексту) */
+}
+/* Ефект підняття при наведенні */
+.like-btn:hover, .edit-btn:hover, .collapse-btn:hover, .submit-comment-btn:hover {
+  transform: translateY(-1px);
+}
+/* Ефект натискання */
+.like-btn:active, .edit-btn:active, .collapse-btn:active, .submit-comment-btn:active {
+  transform: translateY(0px);
+}
+
+/* 11.1 Кнопка "Подобається" (Like) */
+.like-btn {
+background-color: var(--color-secondary); /* Світло-синій фон */
+color: var(--color-primary);            /* Синій текст */
+}
+.like-btn:hover {
+background-color: #d1d9ff;              /* Трохи темніший фон при наведенні */
+}
+/* Стиль для активної (натиснутої) кнопки лайка */
+.like-btn.liked {
+  background-color: var(--color-like-active); /* Червоний фон */
+  color: white;                             /* Білий текст */
+}
+.like-btn.liked:hover {
+  background-color: #ff4747; /* Темніший червоний при наведенні */
+}
+
+/* 11.2 Кнопка "Редагувати" (Edit) */
+.edit-btn {
+background-color: var(--color-success); /* Зелений фон */
+color: white;                         /* Білий текст */
+}
+.edit-btn:hover {
+background-color: var(--color-success-dark); /* Темніший зелений при наведенні */
+}
+
+/* 11.3 Кнопка "Згорнути/Розгорнути" (Collapse/Expand) - всередині контенту */
+.collapse-btn {
+background-color: var(--color-border);    /* Світло-сірий фон */
+color: var(--color-text-secondary);     /* Сірий текст */
+margin-top: 20px;                       /* Відступ зверху від тексту статті */
+margin-left: auto;                      /* Притискає кнопку до правого краю */
+display: block;                         /* Робить блочним для роботи margin-left: auto */
+width: fit-content;                     /* Ширина за вмістом */
+}
+.collapse-btn:hover {
+background-color: #dee2e6; /* Трохи темніший сірий при наведенні */
+}
+
+/* ==========================================================================
+ 12. Стилі Контенту Статті (Розгорнутий Вигляд)
+ ========================================================================== */
+
+/* 12.1 Контейнер для розгорнутого контенту */
+.publication-content {
+background-color: transparent; /* Прозорий фон (фон від .article-item) */
+border-radius: 0;              /* Без заокруглення (успадковується від .article-item) */
+padding: 30px;                 /* Внутрішні відступи */
+box-shadow: none;              /* Без тіні */
+border: none;                  /* Без рамки */
+display: none;                 /* За замовчуванням приховано */
+}
+
+/* Показуємо контент, коли батьківський .article-item має клас --expanded */
+.article-item--expanded .publication-content {
+display: block;
+}
+
+/* 12.2 Зображення всередині контенту статті */
+.publication-content .publication-image {
+text-align: center; /* Центрує зображення (якщо воно inline-block) */
+margin-bottom: 25px; /* Відступ під зображенням */
+}
+.publication-content .publication-image img {
+max-width: 100%;          /* Максимальна ширина = ширина контейнера */
+height: auto;             /* Автоматична висота */
+display: inline-block;    /* Дозволяє центрувати за допомогою text-align */
+border-radius: var(--border-radius-medium); /* Заокруглення кутів зображення */
+box-shadow: var(--box-shadow-light); /* Легка тінь */
+}
+
+/* 12.3 Текст статті */
+.publication-content .publication-text p {
+font-size: 1.05em;                /* Розмір шрифту */
+line-height: 1.8;                 /* Міжрядковий інтервал для читабельності */
+color: var(--color-text-primary); /* Основний колір тексту */
+margin-bottom: 1.2em;             /* Відступ між параграфами */
+}
+
+/* 12.4 Стиль для "лайкнутої" статті (візуальний індикатор) */
+.article-item--liked {
+ /* Додаємо кольорову смужку зліва як індикатор */
+ border-left: 4px solid var(--color-primary);
+}
+
+/* ==========================================================================
+ 13. Стилі Секції Коментарів
+ ========================================================================== */
+
+/* 13.1 Контейнер секції коментарів */
+.comment-section {
+background-color: var(--color-background); /* Світло-сірий фон, відрізняється від фону статті */
+/* Заокруглення тільки нижніх кутів, верхні успадковуються від .article-item */
+border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
+padding: 25px 30px;               /* Внутрішні відступи */
+margin-top: 0;                    /* Без відступу зверху (щільне прилягання до контенту) */
+border-top: 1px solid var(--color-border); /* Верхня межа-роздільник */
+display: none;                    /* За замовчуванням приховано */
+}
+
+/* Показуємо коментарі, коли батьківський .article-item має клас --expanded */
+.article-item--expanded .comment-section {
+display: block;
+}
+
+/* 13.2 Заголовок секції коментарів (H4) */
+.comment-section h4 {
+margin-bottom: 20px;             /* Відступ під заголовком */
+color: var(--color-text-primary); /* Основний колір тексту */
+font-size: 1.2em;                 /* Розмір шрифту */
+font-weight: 600;                 /* Напівжирний */
+}
+
+/* 13.3 Форма додавання коментаря */
+.comment-form .form-group {
+margin-bottom: 15px; /* Відступ між полями форми */
+}
+
+/* Мітки (labels) у формі коментарів */
+.comment-form label {
+display: block;                 /* Мітка над полем вводу */
+margin-bottom: 6px;             /* Відступ під міткою */
+font-weight: 500;               /* Насиченість шрифту */
+color: var(--color-text-secondary); /* Сірий колір тексту */
+font-size: 0.9em;               /* Трохи менший шрифт */
+}
+
+/* Поля вводу імені та тексту коментаря */
+.comment-name-input,
+.comment-text-input {
+width: 100%;                     /* Займають всю ширину */
+padding: 10px 12px;              /* Внутрішні відступи */
+border: 1px solid var(--color-border); /* Рамка */
+border-radius: var(--border-radius-medium); /* Заокруглення */
+font-size: 1em;                  /* Стандартний розмір шрифту */
+font-family: var(--font-primary);/* Основний шрифт */
+background-color: var(--color-surface); /* Білий фон */
+color: var(--color-text-primary); /* Колір тексту в полі */
+transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Плавні переходи */
+}
+/* Стиль полів при фокусі */
+.comment-name-input:focus,
+.comment-text-input:focus {
+border-color: var(--color-primary); /* Зміна кольору рамки */
+/* Додавання тіні для візуального виділення фокусу */
+box-shadow: 0 0 0 3px rgba(92, 122, 255, 0.2); /* Використовуємо --color-primary з прозорістю */
+outline: none;                  /* Прибираємо стандартний контур браузера */
+}
+
+/* 13.4 Кнопка відправки коментаря */
+.submit-comment-btn {
+background-color: var(--color-primary); /* Основний акцентний колір */
+color: white;                         /* Білий текст */
+padding: 10px 20px;                 /* Збільшені відступи */
+/* Успадковує інші стилі від загальних стилів кнопок */
+}
+.submit-comment-btn:hover {
+background-color: var(--color-primary-dark); /* Темніший фон при наведенні */
+}
+
+/* 13.5 Список коментарів */
+.comments-list {
+margin-top: 30px; /* Відступ над списком (від форми) */
+}
+
+/* 13.6 Окремий коментар у списку */
+.comment-item {
+border-bottom: 1px solid var(--color-border); /* Роздільник між коментарями */
+padding: 15px 0;                 /* Вертикальні відступи */
+}
+/* Прибираємо нижню межу та відступ у останнього коментаря */
+.comment-item:last-child {
+border-bottom: none;
+padding-bottom: 0;
+}
+
+/* 13.7 Ім'я автора коментаря */
+.comment-author {
+font-weight: 600;                 /* Напівжирний */
+margin-bottom: 5px;              /* Відступ під ім'ям */
+color: var(--color-text-primary); /* Основний колір тексту */
+font-size: 1.05em;                /* Трохи більший шрифт */
+}
+
+/* 13.8 Текст коментаря */
+.comment-text {
+line-height: 1.6;                 /* Міжрядковий інтервал */
+color: var(--color-text-secondary);/* Сірий колір */
+}
+
+/* ==========================================================================
+ 14. Стилі для Елементів Управління (Сортування)
+ ========================================================================== */
+
+/* 14.1 Контейнер для елементів сортування */
+.sort-controls {
+  margin-bottom: 25px;   /* Відступ під елементами сортування */
+  display: flex;         /* Розташування елементів в рядок */
+  align-items: center;   /* Вирівнювання по вертикалі */
+  gap: 10px;             /* Відступ між міткою та списком */
+}
+
+/* 14.2 Мітка для списку сортування */
+.sort-controls label {
+  font-weight: 500;               /* Насиченість шрифту */
+  color: var(--color-text-secondary); /* Сірий колір */
+}
+
+/* 14.3 Випадаючий список для вибору сортування */
+.sort-controls select {
+  padding: 8px 12px;             /* Внутрішні відступи */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  border: 1px solid var(--color-border); /* Рамка */
+  background-color: var(--color-surface); /* Фон */
+  font-family: var(--font-primary); /* Шрифт */
+  font-size: 0.95em;            /* Розмір шрифту */
+  cursor: pointer;              /* Курсор-рука */
+}
+
+/* ==========================================================================
+   15. Стилі Сторінок Авторизації (Login/Signup Pages)
+   ========================================================================== */
+
+/* 15.1 Контейнер для форми на сторінках входу/реєстрації */
+.auth-page-container {
+  max-width: 420px; /* Максимальна ширина контейнера */
+  margin: 50px auto; /* Відступи зверху/знизу та авто-відступи з боків для центрування */
+  padding: 40px; /* Великі внутрішні відступи */
+  background-color: var(--color-surface); /* Фон контейнера */
+  border-radius: var(--border-radius-large); /* Заокруглені кути */
+  box-shadow: var(--box-shadow-medium); /* Стандартна тінь */
+  transition: box-shadow 0.3s ease; /* Плавний перехід тіні */
+  position: relative; /* Необхідно для позиціонування псевдоелементів */
+  overflow: hidden; /* Обрізає псевдоелементи */
+  z-index: 1; /* Контейнер вище фону сторінки */
+}
+
+/* Ефект тіні при наведенні на контейнер */
+.auth-page-container:hover {
+   box-shadow: var(--box-shadow-hover);
+}
+
+/* 15.2 Декоративні псевдоелементи (блоби) для сторінок авторизації */
+/* Перший блоб (верхній лівий) */
+.auth-page-container::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: -60px;
+  width: 140px;
+  height: 140px;
+  background-color: var(--color-secondary); /* Світло-синій */
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Форма блоба */
+  opacity: 0.5;
+  z-index: -1; /* Позаду контенту форми */
+}
+
+/* Другий блоб (нижній правий) */
+.auth-page-container::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 170px;
+  height: 110px;
+  background-color: #e0e7ff; /* Дуже світлий синьо-фіолетовий */
+  border-radius: 60% 40% 30% 70% / 60% 70% 30% 40%; /* Інша форма блоба */
+  opacity: 0.6;
+  z-index: -1; /* Позаду контенту форми */
+}
+
+/* 15.3 Стилі для самої форми (<form class="auth-form">) */
+.auth-form {
+  display: flex;
+  flex-direction: column; /* Елементи форми розташовані вертикально */
+  gap: 20px; /* Відступ між елементами форми */
+  position: relative; /* Щоб форма була поверх псевдоелементів */
+  z-index: 1;
+}
+
+/* 15.4 Заголовок форми (H3 - "Вхід" або "Реєстрація") */
+.auth-form h3 {
+  text-align: center;                /* Центрування */
+  color: var(--color-text-primary);  /* Основний колір тексту */
+  font-size: 1.8em;                  /* Розмір шрифту */
+  font-weight: 600;                  /* Напівжирний */
+  margin-bottom: 10px;               /* Відступ знизу */
+}
+
+/* 15.5 Група елементів форми (мітка + поле вводу) */
+.form-group {
+  display: flex;
+  flex-direction: column; /* Мітка над полем */
+  gap: 8px; /* Відступ між міткою та полем */
+}
+
+/* Мітки (label) */
+.form-group label {
+  font-weight: 500;
+  color: var(--color-text-secondary); /* Сірий колір */
+  font-size: 0.9em; /* Трохи менший шрифт */
+}
+
+/* 15.6 Поля вводу (email, password) */
+.auth-input {
+  padding: 12px 15px; /* Внутрішні відступи */
+  border: 1px solid var(--color-border); /* Рамка */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  font-size: 1em;
+  font-family: var(--font-primary);
+  background-color: var(--color-background); /* Світлий фон поля */
+  color: var(--color-text-primary); /* Колір введеного тексту */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Плавні переходи */
+  width: 100%; /* Займає всю ширину */
+  box-sizing: border-box; /* padding та border включені в ширину */
+}
+
+/* Стилі полів вводу при фокусі */
+.auth-input:focus {
+  border-color: var(--color-primary); /* Зміна кольору рамки */
+  box-shadow: 0 0 0 3px rgba(92, 122, 255, 0.2); /* Тінь фокусу (синя) */
+  outline: none; /* Прибираємо стандартний контур */
+  background-color: var(--color-surface); /* Можна змінити фон при фокусі (на білий) */
+}
+
+/* 15.7 Повідомлення про помилку */
+.auth-error {
+  color: #e74c3c; /* Яскраво-червоний колір тексту */
+  background-color: rgba(231, 76, 60, 0.1); /* Легкий червонуватий фон */
+  border: 1px solid rgba(231, 76, 60, 0.3); /* Напівпрозора червона рамка */
+  padding: 10px 15px; /* Внутрішні відступи */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  font-size: 0.9em;
+  text-align: center; /* Центрування тексту */
+  margin-top: 5px; /* Відступ зверху */
+  margin-bottom: 5px; /* Відступ знизу */
+}
+
+/* 15.8 Основна кнопка форми ("Увійти", "Зареєструватися") */
+.auth-button {
+  padding: 12px 20px; /* Внутрішні відступи */
+  border: none; /* Без рамки */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  background-color: var(--color-primary); /* Основний синій фон */
+  color: white; /* Білий текст */
+  font-size: 1.1em; /* Розмір шрифту */
+  font-weight: 600; /* Напівжирний */
+  cursor: pointer; /* Курсор-рука */
+  transition: background-color 0.2s ease, transform 0.1s ease; /* Плавні переходи */
+  width: 100%; /* Кнопка на всю ширину */
+  margin-top: 10px; /* Відступ зверху */
+}
+
+/* Ефект при наведенні на кнопку */
+.auth-button:hover {
+  background-color: var(--color-primary-dark); /* Темніший синій фон */
+  transform: translateY(-1px); /* Легкий підйом */
+}
+
+/* Ефект при натисканні */
+.auth-button:active {
+    transform: translateY(0px); /* Повернення на місце */
+}
+
+/* Стиль для заблокованої кнопки */
+.auth-button:disabled {
+  background-color: #a1b0ff; /* Світліший, менш насичений синій */
+  cursor: not-allowed; /* Курсор заборони */
+  transform: none; /* Без ефектів */
+}
+
+/* 15.9 Текст та посилання для перемикання між формами (Вхід <-> Реєстрація) */
+.auth-switch-link {
+  text-align: center; /* Центрування */
+  margin-top: 15px; /* Відступ зверху */
+  font-size: 0.95em;
+  color: var(--color-text-secondary); /* Сірий колір тексту */
+}
+
+/* Стиль посилання всередині .auth-switch-link */
+.auth-switch-link a {
+  color: var(--color-primary); /* Основний синій колір */
+  font-weight: 600; /* Напівжирний */
+  text-decoration: none; /* Без підкреслення */
+  transition: color 0.2s ease; /* Плавна зміна кольору */
+}
+
+/* Ефект при наведенні на посилання */
+.auth-switch-link a:hover {
+  color: var(--color-primary-dark); /* Темніший синій */
+  text-decoration: underline; /* Додаємо підкреслення */
+}
+
+/* 15.10 Стилізація роздільника "або" (опціонально) */
+.auth-separator {
+  display: flex;
+  align-items: center; /* Вирівнювання ліній і тексту по вертикалі */
+  text-align: center;
+  color: var(--color-text-secondary); /* Сірий колір тексту "або" */
+  margin: 15px 0; /* Відступи зверху/знизу */
+}
+
+/* Лінії зліва та справа від тексту */
+.auth-separator::before,
+.auth-separator::after {
+  content: ''; /* Обов'язково для псевдоелементів */
+  flex: 1; /* Лінії займають доступний простір */
+  border-bottom: 1px solid var(--color-border); /* Сіра лінія */
+}
+
+/* Відступи від тексту до ліній */
+.auth-separator:not(:empty)::before {
+  margin-right: .5em; /* Відступ справа від лівої лінії */
+}
+.auth-separator:not(:empty)::after {
+  margin-left: .5em; /* Відступ зліва від правої лінії */
+}
+
+/* 15.11 Стилізація кнопки "Увійти через Google" (опціонально) */
+.google-signin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Центрування іконки та тексту */
+  gap: 10px; /* Відступ між іконкою та текстом */
+  padding: 10px 15px; /* Внутрішні відступи */
+  border: 1px solid var(--color-border); /* Рамка */
+  border-radius: var(--border-radius-medium); /* Заокруглення */
+  background-color: var(--color-surface); /* Білий фон */
+  color: var(--color-text-primary); /* Основний колір тексту */
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease; /* Плавні переходи */
+  width: 100%; /* На всю ширину */
+}
+
+/* Ефект при наведенні на кнопку Google */
+.google-signin-button:hover {
+  background-color: var(--color-background); /* Легкий сірий фон */
+  border-color: #ccc; /* Трохи темніша рамка */
+}
+
+/* Стиль для іконки Google (приклад) */
+.google-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  /* Тут має бути реальна іконка (SVG, img, font icon) */
+  background-color: #eee; /* Тимчасовий замінник */
+  border-radius: 50%; /* Тимчасовий замінник */
+}
