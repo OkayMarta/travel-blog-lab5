@@ -1,107 +1,122 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Компонент для створення навігаційних посилань
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'; // Імпортуємо хук useAuth
 
 /**
  * Компонент CommentForm рендерить форму для додавання нового коментаря до статті.
- * Він включає поля для введення імені та тексту коментаря, а також кнопку відправки.
- * Форма та її елементи блокуються, якщо користувач не авторизований.
+ * Перевіряє авторизацію користувача за допомогою useAuth.
  *
  * @param {object} props - Пропси компонента.
- * @param {string} props.articleId - ID статті, до якої додається коментар (використовується для унікальних ID полів).
- * @param {function} props.onCommentSubmit - Функція зворотного виклику, що викликається при успішній відправці форми. Передає ID статті та об'єкт з даними коментаря ({ name, text }).
- * @param {boolean} props.isAuth - Прапорець, що вказує, чи авторизований користувач. Визначає, чи активна форма.
+ * @param {string} props.articleId - ID статті, до якої додається коментар.
+ * @param {function} props.onCommentSubmit - Функція зворотного виклику для обробки відправки.
  */
-function CommentForm({ articleId, onCommentSubmit, isAuth }) {
-  // Стан для зберігання імені користувача, введеного в полі
-  const [name, setName] = useState('');
-  // Стан для зберігання тексту коментаря, введеного в полі
-  const [text, setText] = useState('');
+function CommentForm({ articleId, onCommentSubmit }) {
+    const { currentUser } = useAuth(); // Отримуємо поточного користувача з контексту
+    const [name, setName] = useState(''); // Стан для зберігання імені користувача
+    const [text, setText] = useState(''); // Стан для зберігання тексту коментаря
+    // Стан для відстеження процесу відправки (наприклад, для блокування кнопки)
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * Обробник відправки форми.
-   * Перевіряє авторизацію користувача та заповненість полів.
-   * Якщо все гаразд, викликає функцію onCommentSubmit та очищує поля форми.
-   * @param {React.FormEvent<HTMLFormElement>} event - Об'єкт події відправки форми.
-   */
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Запобігаємо стандартній перезавантаженню сторінки при відправці форми
+    /**
+     * Асинхронний обробник події відправки форми.
+     * Перевіряє авторизацію користувача та валідність введених даних.
+     * Викликає функцію onCommentSubmit, передану через пропси, для відправки даних.
+     * Обробляє стани завантаження та можливі помилки під час відправки.
+     * @param {React.FormEvent<HTMLFormElement>} event - Об'єкт події форми.
+     */
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Запобігаємо стандартній поведінці форми (перезавантаженню сторінки)
 
-    // Перевірка №1: Чи авторизований користувач?
-    if (!isAuth) {
-      alert("Будь ласка, увійдіть, щоб залишати коментарі.");
-      return; // Припиняємо обробку, якщо користувач не увійшов
-    }
+        // Перевіряємо, чи користувач авторизований, використовуючи дані з контексту
+        if (!currentUser) {
+            alert("Будь ласка, увійдіть, щоб залишати коментарі.");
+            return; // Зупиняємо виконання, якщо користувач не увійшов
+        }
 
-    // Перевірка №2: Чи заповнені поля імені та тексту (після видалення зайвих пробілів)?
-    if (!name.trim() || !text.trim()) {
-      alert('Будь ласка, заповніть ім\'я та текст коментаря.');
-      return; // Припиняємо обробку, якщо поля порожні
-    }
+        // Перевіряємо, чи введено текст коментаря (після видалення пробілів на початку та в кінці)
+        if (!text.trim()) {
+            alert('Будь ласка, заповніть текст коментаря.');
+            return; // Зупиняємо виконання, якщо текст порожній
+        }
 
-    // Викликаємо функцію, передану з батьківського компонента,
-    // з ID статті та об'єктом даних коментаря
-    onCommentSubmit(articleId, { name, text });
+        setIsSubmitting(true); // Встановлюємо стан "відправка триває"
+        try {
+            // Викликаємо функцію onCommentSubmit, передану з батьківського компонента (ArticleList).
+            // Ця функція відповідає за взаємодію з API для збереження коментаря.
+            // Передаємо ID статті та об'єкт з даними коментаря (ім'я або "Анонім", якщо ім'я не вказано, та текст).
+            await onCommentSubmit(articleId, { name: name.trim() || 'Анонім', text: text.trim() });
 
-    // Очищуємо поля форми після успішної відправки
-    setName('');
-    setText('');
-  };
+            // Очищуємо поля форми ТІЛЬКИ у випадку успішної відправки коментаря (успішного виконання onCommentSubmit)
+            setName('');
+            setText('');
+            console.log("Форма коментарів успішно очищена після відправки.");
 
-  // Рендеринг компонента форми
-  return (
-    <form className="comment-form" onSubmit={handleSubmit}>
-       {/* Умовний рендеринг: показуємо повідомлення та посилання на сторінку входу,
-           якщо користувач НЕ авторизований */}
-       {!isAuth && (
-          <p className="auth-required-message" style={{ marginBottom: '15px', color: 'var(--color-text-secondary)' }}>
-            Будь ласка, <Link to="/login" style={{ color: 'var(--color-primary)' }}>увійдіть</Link>, щоб залишити коментар.
-          </p>
-       )}
+        } catch (error) {
+            // Обробляємо помилку, яка могла виникнути під час виконання onCommentSubmit (наприклад, помилка мережі або сервера)
+            console.error("Помилка під час відправки коментаря (перехоплена в CommentForm):", error);
+            // Показуємо повідомлення про помилку користувачу
+            alert(`Не вдалося відправити коментар: ${error.message || 'Сталася невідома помилка'}`);
+        } finally {
+            // Незалежно від того, чи була відправка успішною чи ні, встановлюємо стан "відправка завершена"
+            setIsSubmitting(false);
+        }
+    };
 
-      {/* Група для поля введення імені */}
-      <div className="form-group">
-        {/* Мітка поля, пов'язана з input через htmlFor та id */}
-        <label htmlFor={`comment-name-${articleId}`}>Ваше ім'я:</label>
-        <input
-          type="text"
-          // Генеруємо унікальний ID для поля, використовуючи articleId
-          id={`comment-name-${articleId}`}
-          className="comment-name-input"
-          placeholder="Ваше ім'я"
-          value={name} // Значення поля контролюється станом `name`
-          onChange={(e) => setName(e.target.value)} // Оновлюємо стан при зміні значення
-          required // Поле є обов'язковим для заповнення (валідація браузера)
-          disabled={!isAuth} // Блокуємо поле, якщо користувач не авторизований
-        />
-      </div>
+    // Визначаємо, чи повинна форма бути неактивною (disabled)
+    // Форма неактивна, якщо користувач не авторизований АБО якщо триває процес відправки
+    const isFormDisabled = !currentUser || isSubmitting;
 
-      {/* Група для поля введення тексту коментаря */}
-      <div className="form-group">
-        <label htmlFor={`comment-text-${articleId}`}>Ваш коментар:</label>
-        <textarea
-          id={`comment-text-${articleId}`}
-          className="comment-text-input"
-          placeholder="Ваш коментар"
-          value={text} // Значення поля контролюється станом `text`
-          onChange={(e) => setText(e.target.value)} // Оновлюємо стан при зміні значення
-          required // Поле є обов'язковим
-          rows="3" // Початкова кількість видимих рядків
-          disabled={!isAuth} // Блокуємо поле, якщо користувач не авторизований
-        ></textarea>
-      </div>
+    return (
+        <form className="comment-form" onSubmit={handleSubmit}>
+            {/* Якщо користувач не авторизований, показуємо повідомлення з посиланням на сторінку входу */}
+            {!currentUser && (
+                <p className="auth-required-message" style={{ marginBottom: '15px', color: 'var(--color-text-secondary)' }}>
+                    Будь ласка, <Link to="/login" style={{ color: 'var(--color-primary)' }}>увійдіть</Link>, щоб залишити коментар.
+                </p>
+            )}
 
-      {/* Кнопка відправки форми */}
-      <button
-          type="submit"
-          className="submit-comment-btn"
-          disabled={!isAuth} // Блокуємо кнопку, якщо користувач не авторизований
-          // Додаємо підказку, яка з'являється при наведенні на заблоковану кнопку
-          title={!isAuth ? "Потрібно увійти в систему" : ""}
-      >
-          Надіслати
-      </button>
-    </form>
-  );
+            {/* Група полів форми для імені */}
+            <div className="form-group">
+                <label htmlFor={`comment-name-${articleId}`}>Ваше ім'я (необов'язково):</label>
+                <input
+                    type="text"
+                    id={`comment-name-${articleId}`} // Унікальний ID для label зв'язку
+                    className="comment-name-input"
+                    placeholder="Ваше ім'я"
+                    value={name} // Значення поля контролюється станом 'name'
+                    onChange={(e) => setName(e.target.value)} // Оновлюємо стан при зміні значення
+                    // Поле імені більше не є обов'язковим
+                    disabled={isFormDisabled} // Поле неактивне, якщо форма заблокована
+                />
+            </div>
+
+            {/* Група полів форми для тексту коментаря */}
+            <div className="form-group">
+                <label htmlFor={`comment-text-${articleId}`}>Ваш коментар:</label>
+                <textarea
+                    id={`comment-text-${articleId}`} // Унікальний ID для label зв'язку
+                    className="comment-text-input"
+                    placeholder="Ваш коментар"
+                    value={text} // Значення поля контролюється станом 'text'
+                    onChange={(e) => setText(e.target.value)} // Оновлюємо стан при зміні значення
+                    required // Поле тексту є обов'язковим для заповнення (валідація браузера)
+                    rows="3" // Висота текстового поля
+                    disabled={isFormDisabled} // Поле неактивне, якщо форма заблокована
+                ></textarea>
+            </div>
+
+            {/* Кнопка відправки форми */}
+            <button
+                type="submit"
+                className="submit-comment-btn"
+                disabled={isFormDisabled} // Кнопка неактивна, якщо форма заблокована
+                title={!currentUser ? "Потрібно увійти в систему" : ""} // Підказка для неавторизованих користувачів
+            >
+                {/* Текст кнопки змінюється залежно від стану відправки */}
+                {isSubmitting ? 'Надсилання...' : 'Надіслати'}
+            </button>
+        </form>
+    );
 }
 
 export default CommentForm;
