@@ -33,18 +33,6 @@ function Navigation() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  /**
-   * Обробник кліку миші на документі.
-   * Закриває мобільне меню, якщо клік відбувся поза елементом навігації.
-   * @param {MouseEvent} event - Об'єкт події кліку миші.
-   */
-  const handleClickOutside = (event) => {
-      // Перевіряємо, чи існує navRef.current, чи клік був не всередині <nav> і чи меню відкрите
-      if (navRef.current && !navRef.current.contains(event.target) && isMobileMenuOpen) {
-          // Якщо всі умови виконані, закриваємо меню
-          setIsMobileMenuOpen(false);
-      }
-  };
 
   /**
    * Обробник кліку на посилання NavLink.
