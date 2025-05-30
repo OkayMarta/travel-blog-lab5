@@ -8,7 +8,7 @@
 **[https://6839b70f8942b97d140307a3--travel-blog-lab5.netlify.app/](https://6839b70f8942b97d140307a3--travel-blog-lab5.netlify.app/)**
 
 ## 📸 Скріншот Головної Сторінки
-[Головна сторінка блогу](screenshots/screenshot-main.png)
+![Головна сторінка блогу](screenshots/screenshot-main.png)
 
 ## ✨ Особливості (Features)
 
