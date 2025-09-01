@@ -5,7 +5,7 @@
 ## 🚀 Жива Версія (Live Demo)
 
 Ви можете переглянути розгорнутий проект тут:
-**[https://6839b70f8942b97d140307a3--travel-blog-lab5.netlify.app/](https://6839b70f8942b97d140307a3--travel-blog-lab5.netlify.app/)**
+**[https://68b5efeb59fa825f3f41f7d0--travel-blog-lab5.netlify.app/](https://68b5efeb59fa825f3f41f7d0--travel-blog-lab5.netlify.app/)**
 
 ## 📸 Скріншот Головної Сторінки
 ![Головна сторінка блогу](screenshots/screenshot-main.png)
